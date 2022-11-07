@@ -26,15 +26,64 @@
 
 % Fonts
 \RequirePackage[T1]{fontenc}
-\RequirePackage{charter}
-\RequirePackage[varqu,varl]{inconsolata}
-\RequirePackage[type1]{cabin}
-\RequirePackage[xcharter]{newtxmath}
-\RequirePackage{bm}
+\RequirePackage{unicode-math}
+\setmainfont{XCharter}
+\setsansfont{Cabin}
+\setmathfont{XCharter Math}
+\setmonofont{Source Code Pro}
+
+% Colors
+\RequirePackage[dvipsnames,table]{xcolor}
+\definecolor{lightGrey}{rgb}{0.9,0.9,0.9}
+\colorlet{codeColor}{PineGreen!15!white}
+\colorlet{codeBorder}{PineGreen}
+\colorlet{definitionColor}{Aquamarine!30!white}
+\colorlet{definitionBorder}{Aquamarine!75!black}
+\colorlet{definitionCode}{definitionColor!35!white}
+\colorlet{exampleColor}{blue!15!white}
+\colorlet{exampleTitle}{black}
+\colorlet{exampleCode}{exampleColor!35!white}
+\colorlet{noteColor}{red!15!white}
+\colorlet{noteBorder}{red!75!black}
+\colorlet{noteCode}{noteColor!35!white}
 
 % Tables
 \RequirePackage{tabularray}
 \UseTblrLibrary{booktabs}
+\UseTblrLibrary{varwidth}
+\SetTblrInner[tblr]{measure=vbox}
+\newcommand{\nl}{\\}
+
+% Code
+\RequirePackage{minted}
+
+\RequirePackage{etoolbox}
+\makeatletter
+% replace \medskip before the box with nothing, i.e., remove it
+\patchcmd{\minted@colorbg}{\medskip}{}{}{}
+\makeatother
+
+
+% Color Boxes
+\RequirePackage{tcolorbox}
+\tcbuselibrary{breakable}
+\RequirePackage{adjustbox}
+\newenvironment{codebox}[2][]
+	{\tcolorbox[breakable, colback=codeColor, colframe=codeBorder, fonttitle=\bfseries, title={#2}, center title, parbox=false, center, #1]}
+	{\endtcolorbox}
+\newenvironment{definition}[2][]
+	{\tcolorbox[breakable, colback=definitionColor, colframe=definitionBorder, fonttitle=\bfseries, title={#2}, center title, parbox=false, center, #1]}
+	{\endtcolorbox}
+\newenvironment{example}[1][]
+	{\tcolorbox[coltitle=exampleTitle, colback=exampleColor, breakable, detach title, before upper={\tcbtitle\quad}, title=\textbf{Example}, parbox=false, center, #1]}
+	{\endtcolorbox}
+\newenvironment{sidenote}[2][]
+	{\tcolorbox[breakable, colback=noteColor, colframe=noteBorder, fonttitle=\bfseries, title={#2}, center title, parbox=false, center, #1]}
+	{\endtcolorbox}
+
+% Indented Paragraphs
+\RequirePackage{changepage}
+\newenvironment{indentparagraph}{\begin{adjustwidth}{2em}{}}{\end{adjustwidth}}
 
 % Include/Input Subfiles
 \RequirePackage{xstring}

@@ -1,0 +1,20 @@
+# notestyles
+\addfile[input]{<filename>}
+\addfile{<filename>}
+\begin{codebox}{title}
+\begin{definition}{title}
+\begin{example}
+\begin{exercise}{title}
+\begin{indentparagraph}
+\begin{sidenote}{title}
+\concept{text}
+\end{codebox}
+\end{definition}
+\end{example}
+\end{exercise}
+\end{indentparagraph}
+\end{sidenote}
+\nl
+\question{text}
+\rulebookend
+\rulechapterend

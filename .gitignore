@@ -10,3 +10,7 @@
 /out/
 *.thm
 *.toc
+*.pygtex
+*.pygstyle
+/_minted-notes/
+/old/

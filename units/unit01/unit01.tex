@@ -1,0 +1,36 @@
+\providecommand{\main}{../..}
+\documentclass[\main/notes.tex]{subfiles}
+
+\begin{document}
+	\chapter{Overloading \& Assert Macro}
+		\section{Overloading}
+			\begin{definition}{Overloading}
+				Define two or more functions with the same function name.\\
+				Must have either (or both):
+				\begin{itemize}[nosep]
+					\item different number of formal parameters
+					\item formal parameters of different types across the functions
+				\end{itemize}
+				\inputminted[bgcolor=definitionCode]{cpp}{\subfix{code/01_overload_example.cpp}}
+
+				\noindent Automatically converts to the correct type needed for a function, unless there is already an overloaded function with that type.
+			\end{definition}
+		\section{Assert Macro}
+			\begin{definition}{\texttt{assert} Macro}
+				Ensure that expected conditions are true at the location of the \texttt{assert} statement. If the conditions are not, the program will display an error message, and abort.
+
+				\begin{minted}[bgcolor=definitionCode]{cpp}
+#include <cassert>
+assert(boolean_expression)
+				\end{minted}
+
+				\noindent To ensure that assertion errors are not shown to users when a program is distributed, use
+				\begin{minted}[bgcolor=definitionCode]{cpp}
+#define NDEBUG
+#include <cassert>
+				\end{minted}
+			\end{definition}
+
+	\rulechapterend
+
+\end{document}
