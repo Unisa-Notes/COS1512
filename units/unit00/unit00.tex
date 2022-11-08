@@ -1,0 +1,442 @@
+\providecommand{\main}{../..}
+\documentclass[\main/notes.tex]{subfiles}
+
+\begin{document}
+	\chapter*{COS1511 Reference\markboth{\MakeUppercase{COS1511 Reference}}{}}
+		\addcontentsline{toc}{chapter}{COS1511 Reference}
+		\section*{Program Basics\markboth{\MakeUppercase{COS1511 Reference}}{Program Basics}}
+			\addcontentsline{toc}{section}{Program Basics}
+			\begin{codebox}{Sample Program}
+				\inputminted{cpp}{\subfix{code/01_sample.cpp}}
+			\end{codebox}
+			\begin{codebox}{Input and Output}
+				\begin{minted}{cpp}
+cin >> "Text"; // input
+cout << "Text"; // output
+cout << endl; // new line
+				\end{minted}
+			\end{codebox}
+			\begin{sidenote}{Integers and Floating Points}
+				An integer is declared with the keyword \texttt{int}, and a floating point with the keyword \texttt{float} or \texttt{double}.
+				\begin{itemize}[nosep]
+					\item Order of operations:
+						\begin{enumerate}[nosep]
+							\item Multiplication and Division ($*$ and $/$)
+							\item Addition and Subtraction ($+$ and $-$)
+						\end{enumerate}
+					\item Division operatior throws away the remainder
+					\item Modulus ($\%$) calculates the remainder. Only works on integers.
+				\end{itemize}
+			\end{sidenote}
+			\begin{definition}{Variables}
+				A variable is declared in the following way:
+				\begin{indentparagraph}
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+variableType variableName;
+					\end{minted}
+				\end{indentparagraph}
+				A value can be assigned to a variable using $=$. This can happen either when the variable is declared, or later in the program.
+				\begin{indentparagraph}
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+int number = 1;
+number = 5;
+					\end{minted}
+				\end{indentparagraph}
+				A variable can also include an expression that will be evaluated.
+				\begin{indentparagraph}
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+number = 3 + 6;
+					\end{minted}
+				\end{indentparagraph}
+				A variable can also refer to another variable, or itself. There is shorthand code if the variable is referring to itself.
+				\begin{indentparagraph}
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+// These are equivalent:
+number = number + 2;
+number += 2;
+
+number = number - 3;
+number -= 3;
+
+// These are equivalent:
+number = number + 1;
+number += 1;
+number++;
+++number;
+					\end{minted}
+				\end{indentparagraph}
+			\end{definition}
+			\begin{sidenote}{Output Formatting}
+				\begin{itemize}[nosep]
+					\item Changing the precision can be done using \texttt{cout.precision(n)}, where \texttt{n} is the number of characters after the decimal point.
+					\item Different flags can be set for output using \texttt{cout.setf()}. An example, for a fixed number of decimal places, is \texttt{cout.setf(ios::fixed)}.
+				\end{itemize}
+			\end{sidenote}
+			\begin{sidenote}{Input a Line}
+				\texttt{cin >>} only works for a single word. To get a line, use
+				\begin{indentparagraph}
+					\begin{minted}[bgcolor=noteCode]{cpp}
+getline(cin, name, '\n');
+					\end{minted}
+				\end{indentparagraph}
+				The parameters are:
+				\begin{enumerate}[nosep]
+					\item \textbf{input stream:} Where the text should come from
+					\item \textbf{variable:} Where the text should be saved to
+					\item \textbf{stop:} What character the text should stop at (not included)
+				\end{enumerate}
+				To clear the last character, to allow more input, use
+				\begin{indentparagraph}
+					\begin{minted}[bgcolor=noteCode]{cpp}
+cin.get();
+					\end{minted}
+				\end{indentparagraph}
+			\end{sidenote}
+			\pagebreak
+			\begin{definition}{Strings and Characters}
+				\begin{description}
+					\item[\texttt{string}] A sequence of characters. To use a string, the \mintinline{cpp}{<string>} header file needs to be included. Written using double quotes (\mintinline{cpp}{"SomeString"})
+
+						The only operator available for strings is $+$, which is used to concatenate strings.
+					\item[\texttt{char}] A character. Written using single quotes (\mintinline{cpp}{'a'}). Represented to the computer as a number using \concept{ASCII}.
+				\end{description}
+			\end{definition}
+			\begin{sidenote}{Escape Characters}
+				Written using a \texttt{\textbackslash}.
+				\begin{center}
+					\begin{tabular}{cl}
+						Escape Character & Meaning\\
+						\midrule
+						\texttt{\textbackslash t} & tab\\
+						\texttt{\textbackslash n} & newline\\
+						\texttt{\textbackslash \textbackslash} & backslash\\
+						\texttt{\textbackslash '} & single quote\\
+						\texttt{\textbackslash "} & double quote\\
+						\texttt{\textbackslash v} & vertical tab\\
+						\texttt{\textbackslash b} & backspace\\
+						\texttt{\textbackslash f} & form feed\\
+						\texttt{\textbackslash a} & alert or bell\\
+						\texttt{\textbackslash r} & carriage return
+					\end{tabular}
+				\end{center}
+			\end{sidenote}
+		\pagebreak
+
+			\section*{Conditional Execution\markboth{\MakeUppercase{COS1511 Reference}}{Conditional Execution}}
+				\addcontentsline{toc}{section}{Conditional Execution}
+				\begin{definition}{If Statements}
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+if (Condition)
+    Statement1;
+else
+    Statement2;
+					\end{minted}
+
+					\noindent If there are multiple commands in a single block, wrap with \texttt{\{\}}
+					\begin{indentparagraph}
+						\begin{minted}[bgcolor=definitionCode]{cpp}
+if (Condition)
+{
+    Statement1;
+    Statament2;
+}
+else
+{
+    Statament3;
+    Statement4;
+}
+						\end{minted}
+					\end{indentparagraph}
+
+					\noindent Statements can be nested. For neatness' sake, align the \mintinline{cpp}{if} and \mintinline{cpp}{else} statements.
+					\begin{indentparagraph}
+						\begin{minted}[bgcolor=definitionCode]{cpp}
+if (Condition1)
+    Statement1;
+else if (Condition2)
+    Statement2;
+else
+    Statement3;
+					\end{minted}
+					\end{indentparagraph}
+				\end{definition}
+				\begin{sidenote}{Comparison Operators}
+					\begin{center}
+						\begin{tabular}{cl}
+							Operator & Meaning\\
+							\midrule
+							\texttt{<} & less than\\
+							\texttt{<=} & less than or equal to\\
+							\texttt{>} & greater than\\
+							\texttt{>=} & greater than or equal to\\
+							\texttt{==} & equal to\\
+							\texttt{!=} & not equal to
+						\end{tabular}
+					\end{center}
+				\end{sidenote}
+				\begin{sidenote}{Boolean Operators}
+					\begin{center}
+						\begin{tabular}{cl}
+							Operator & Meaning\\
+							\midrule
+							\texttt{\&\&} & AND\\
+							\texttt{||} & OR\\
+							\texttt{!} & NOT
+						\end{tabular}
+					\end{center}
+				\end{sidenote}
+				\begin{codebox}{Switch Statements}
+					\begin{minted}{cpp}
+switch (Selector)
+{
+    case Label1:
+        Statement1;
+        break;
+    case Label2:
+        Statement2;
+        break;
+    case LabelN:
+        Statement3;
+        break;
+    default:
+        Statement4;
+}
+					\end{minted}
+				\end{codebox}
+
+			\subsection*{Loops}
+				\addcontentsline{toc}{subsection}{Loops}
+				\begin{codebox}{While Loops}
+					\begin{minted}{cpp}
+while (Condition)
+    Statement;
+
+while (Condition)
+{
+    Statement1;
+    Statement2;
+}
+					\end{minted}
+				\end{codebox}
+				\begin{codebox}{Do While Loops}
+					\begin{minted}{cpp}
+do
+{
+    Statement1;
+} while (Condition);
+					\end{minted}
+				\end{codebox}
+				\begin{codebox}{For Loops}
+					\begin{minted}{cpp}
+for (int i = 0; i < n; i++)
+{
+    Statement;
+}
+					\end{minted}
+				\end{codebox}
+				All of the loops above can be nested inside each other.
+
+			\subsection*{Debugging}
+				\addcontentsline{toc}{subsection}{Debugging}
+				\begin{definition}{Error Types}
+					\begin{description}
+						\item[Syntax Errors] Inaccurate syntax for the programming language
+						\item[Runtime Errors] Errors that occur while the program is running, that cause it to crash
+						\item[Logical Errors] Program runs correctly, but gives the wrong, or unexprected, results
+					\end{description}
+				\end{definition}
+
+		\section*{Functions\markboth{\MakeUppercase{COS1511 Reference}}{Functions}}
+			\addcontentsline{toc}{section}{Functions}
+			\subsection*{Predefined Functions}
+				\addcontentsline{toc}{subsection}{Predefined Functions}
+					\begin{sidenote}{C++ Standard Library Functions}
+						\begin{center}
+							\begin{tblr}{XXl}
+								Function Signature & Description & Header File\\
+								\midrule
+								\mintinline{cpp}{getline(istream in,} \nl \mintinline{cpp}{string& s, char delim)} & Extract characters from \texttt{in} up to the first occurence of \texttt{delim}, and store it in \texttt{s} & \mintinline{cpp}{iostream}\\
+								\mintinline{cpp}{srand(int seed);} & Make random number generator from the given integer as a seed & \mintinline{cpp}{cstdlib}
+							\end{tblr}
+						\end{center}
+						\begin{center}
+							\begin{tblr}{lXl}
+								Function Signature & Description & Header File\\
+								\midrule
+								\mintinline{cpp}{int abs(int n);} & absolute value & \mintinline{cpp}{cstdlib}\\
+								\mintinline{cpp}{int ceil(float n);} & smallest int greater than or equal to & \mintinline{cpp}{cmath}\\
+								\mintinline{cpp}{float cos(float n);} & cosine & \mintinline{cpp}{cmath}\\
+								\mintinline{cpp}{float exp(float n);} & exponential function & \mintinline{cpp}{cmath}\\
+								\mintinline{cpp}{float fabs(float n);} & floating point absolute value & \mintinline{cpp}{cmath}\\
+								\mintinline{cpp}{int floor(float n);} & largest int less than or equal to& \mintinline{cpp}{cmath}\\
+								\mintinline{cpp}{float log(float n);} & natural logarithm& \mintinline{cpp}{cmath}\\
+								\mintinline{cpp}{float log10(float n);} & logarithm base 10& \mintinline{cpp}{cmath}\\
+								\mintinline{cpp}{float pow(float n, float e);} & power $n^{e}$ & \mintinline{cpp}{cmath}\\
+								\mintinline{cpp}{int rand();} & random int from $0$ to $32\,767$& \mintinline{cpp}{cstdlib}\\
+								\mintinline{cpp}{float sin(float n);} & sine & \mintinline{cpp}{cmath}\\
+								\mintinline{cpp}{float sqrt(float n);} & square root& \mintinline{cpp}{cmath}\\
+								\mintinline{cpp}{char tolower(char c);} & convert to lowercase& \mintinline{cpp}{iostream}\\
+								\mintinline{cpp}{char toupper(char c);} & convert to uppercase& \mintinline{cpp}{iostream}\\
+								\mintinline{cpp}{int time(int n);} & current epoch time in seconds& \mintinline{cpp}{ctime}
+							\end{tblr}
+						\end{center}
+					\end{sidenote}
+					\begin{sidenote}{\texttt{string} functions}
+						\begin{center}
+							\begin{tblr}{>{\raggedright}X>{\raggedright}X}
+								Function Signature & Description\\
+								\midrule
+								\mintinline{cpp}{int size();} & Return the size (length) of a string object \\
+								\mintinline{cpp}{string substr(int start, int n);} & Returns a substring. \texttt{start} is the index of the first character to include, and \texttt{n} is the number of characters to include.\\
+								\mintinline[breaklines]{cpp}{int find(string search, int start);} & Find the position of \texttt{search} within the string. Begin searching for the string from the index specified in \texttt{start}. Returns $-1$ if the string is not found.\\
+								\mintinline{cpp}{void insert(int i, string s);} & Adds \texttt{s} to the string at the given index \texttt{i}.\\
+								\mintinline{cpp}{void erase(int i, int n);} & Erase a substring from a string object. Start erasing from \texttt{i}, and erase \texttt{n} number of characters.\\
+								\mintinline[breaklines]{cpp}{void replace(int i, int n, string s);}
+								& Replace specified characters in a string with another string. Replace from \texttt{i}, \texttt{n} number of characters.
+							\end{tblr}
+						\end{center}
+					\end{sidenote}
+			\subsection*{Defining Functions}
+				\addcontentsline{toc}{subsection}{Defining Functions}
+				\begin{codebox}{Function Layout}
+					\begin{minted}{cpp}
+ReturnType FunctionName(ParamType arg1, ParamType argN)
+{
+    Statements;
+}
+					\end{minted}
+				\end{codebox}
+			\subsection*{Local and Global Variables}
+				\addcontentsline{toc}{subsection}{Local and Global Variables}
+				\begin{definition}{Local and Global Variables}
+					\begin{description}[nosep]
+						\item[Global Variable] Declared before all function definitions, and can be accessed by all functions.
+						\item[Local Variable] Declared in the body of a function, and can only be accessed by that function.
+					\end{description}
+				\end{definition}
+				\begin{sidenote}{Local vs Global}
+					\begin{itemize}[nosep]
+						\item Use local variables when variables belong to specific functions, so that another function doesn't accidentally change the values.
+						\item Use parameters rather than global variables if a variable is needed in multiple functions
+					\end{itemize}
+				\end{sidenote}
+			\pagebreak
+			\subsection*{Void Functions}
+				\addcontentsline{toc}{subsection}{Void Functions}
+				Used when there is repeated code in a program that does not need to produce a result, or when input or output has to be done.
+			\subsection*{Reference Parameters}
+				\addcontentsline{toc}{subsection}{Reference Parameters}
+				\begin{definition}{Reference Parameter}
+					Used to allow a called function to change the values of variables declared in the main function, or another function.
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+void FunctionName(ParameterType& ParameterName);
+					\end{minted}
+				\end{definition}
+
+		\section*{Data Structures\markboth{\MakeUppercase{COS1511 Reference}}{Data Structures}}
+			\addcontentsline{toc}{section}{Data Structures}
+			\subsection*{Arrays}
+				\addcontentsline{toc}{subsection}{Arrays}
+				\begin{definition}{Array}
+					A group of elements of the same type.
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+Type ArrayName[NumValues];
+Type ArrayName[] = ListOfValues;
+					\end{minted}
+					\begin{example}
+						\begin{minted}[bgcolor=exampleCode]{cpp}
+int nums[3];
+nums = {1, 2, 3};
+
+char letters[] = {'a', 'b', 'c'};
+						\end{minted}
+					\end{example}
+					\noindent Arrays can be sent to functions in this form:
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+ReturnType FunctionName(Type ArrayName[])
+{
+    Statements;
+}
+					\end{minted}
+					The number of elements does not need to be delared in the brackets -- it will be ignored. All arrays are passed by reference. To prevent a function from changing the value of an array, declare it as constant in the parameter:
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+ReturnType FunctionName(const Type ArrayName[]);
+					\end{minted}
+					Arrays cannot be used as a return type.
+				\end{definition}
+				\begin{sidenote}{Define a constant for array size}
+					Use an explicit length defined as a constant in order to improve readability.
+					\begin{minted}[bgcolor=noteCode]{cpp}
+const int NUM_VALS = 5;
+int ArrayName[NUM_VALS];
+					\end{minted}
+				\end{sidenote}
+				\subsubsection*{Two-Dimensional Arrays}
+					\addcontentsline{toc}{subsubsection}{Two-Dimensional Arrays}
+					\begin{definition}{Two-Dimensional Array}
+						Used to store data in table form. An array of arrays.
+						\begin{minted}[bgcolor=definitionCode]{cpp}
+Type ArrayName[NUM_ROWS][NUM_COLS];
+						\end{minted}
+						To iterate through a 2D array, use nested for loops.
+						\begin{minted}[bgcolor=definitionCode]{cpp}
+for (int i = 0; i < NUM_ROWS; i++)
+{
+    for (int j = 0; j < NUM_COLS; j++)
+    {
+      ArrayName[i][j];
+    }
+}
+						\end{minted}
+					\end{definition}
+
+			\subsection*{Structs}
+				\addcontentsline{toc}{subsection}{Structs}
+					\begin{definition}{Struct}
+						Equivalent to a \concept{record} in other programming languages. Holds related data \concept{fields}.
+						\begin{minted}[bgcolor=definitionCode]{cpp}
+struct StructName
+{
+    Type1 FieldList1;
+    TypeN FieldListN;
+};
+						\end{minted}
+						After that, you need to declare a variable of the struct type:
+						\begin{minted}[bgcolor=definitionCode]{cpp}
+StructName VariableName;
+						\end{minted}
+						To refer to different fields of the struct, use a period (\texttt{.}).
+						\begin{minted}[bgcolor=definitionCode]{cpp}
+VariableName.FieldName;
+						\end{minted}
+						To copy fields from one struct to another, use
+						\begin{minted}[bgcolor=definitionCode]{cpp}
+struct1 = struct2;
+						\end{minted}
+					\end{definition}
+					\begin{sidenote}{Remember the semicolon}
+						After a \texttt{struct} declaration, there always needs to be a semicolon. Easy to forget.
+					\end{sidenote}
+
+			\subsection*{Classes}
+				\addcontentsline{toc}{subsection}{Classes}
+				\begin{definition}{Class}
+					Defines a structure for an object. A `glorified struct'.
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+class ClassName
+{
+  public:
+    publicMemberFunctions;
+    publicMemberVariables;
+  private:
+    privateMemberFunctions;
+    privateMemberVariables;
+};
+
+ClassName::function(){}
+					\end{minted}
+				\end{definition}
+
+	\rulechapterend
+
+\end{document}
