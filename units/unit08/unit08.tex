@@ -1,0 +1,31 @@
+\providecommand{\main}{../..}
+\documentclass[\main/notes.tex]{subfiles}
+
+\begin{document}
+	\setcounter{chapter}{7}
+	\chapter{Recursion}
+		\begin{definition}{Recursion}
+			A function that calls itself.
+		\end{definition}
+		\begin{sidenote}{Recursion Structure}
+			For a recursive function to work properly, the following is needed:
+			\begin{indentparagraph}
+				\begin{description}
+					\item[Recursive Case] One or more cases that include one or more recursive calls to the function being defined. These should be `smaller' versions of the task, getting closer to the \concept{base case}.
+					\item[Base Case] Also called \concept{stopping case}. One or more cases that include no recursive calls.
+				\end{description}
+			\end{indentparagraph}
+		\end{sidenote}
+		In order to keep track of recursion, the computer uses the concept of a \concept{stack}.
+		\begin{definition}{Stack}
+			A \concept{last-in first-out} memory structure. To start using a stack, an \concept{activation frame} is used.
+			\begin{indentparagraph}
+				\begin{description}
+					\item[Stack Overflow] When the memory available for the stack runs out, likely due to an excessive recursive chain.
+				\end{description}
+			\end{indentparagraph}
+		\end{definition}
+		\section{Recursion vs Iteration}
+			Recursion is slower, and uses more storage. However, it can produce code that is easier to read.
+	\rulechapterend
+\end{document}
