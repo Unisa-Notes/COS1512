@@ -1,0 +1,111 @@
+\providecommand{\main}{../..}
+\documentclass[\main/notes.tex]{subfiles}
+
+\begin{document}
+	\setcounter{chapter}{1}
+	\chapter{I/O Streams}
+		\section{Streams}
+			\begin{definition}{Stream}
+				A C++ object that is a flow of characters (or other form of data). If data is coming in, it is called an \concept{input stream} (\texttt{ifstream}). If data is going out of the program, it is called an \concept{output stream} (\texttt{ofstream}).
+			\end{definition}
+			\begin{codebox}{Defining streams}
+				\begin{minted}{cpp}
+#include <fstream>
+using namespace std;
+
+ifstream inStream;
+ofstream outStream;
+			\end{minted}
+		\end{codebox}
+		\begin{codebox}{Connecting files to a stream}
+			\begin{minted}{cpp}
+inStream.open("infile.dat");
+// or
+ifstream inStream("infile.dat");
+				\end{minted}
+			\end{codebox}
+			\begin{sidenote}{A file has two names}
+				Everu file has an \concept{external file name}, the actual name of the file on the system. Every file also has a stream that you associate with it, and then you refer to the file using the stream.
+			\end{sidenote}
+			\pagebreak
+			\begin{codebox}{Stream Example}
+				\inputminted[]{cpp}{\subfix{code/01_example.cpp}}
+			\end{codebox}
+
+		\section{Classes and Objects}
+			\begin{definition}{Object}
+				A variable that has functions as well as data associated with it.
+			\end{definition}
+			Different objects can have different member functions with the same names, or different names.
+			\begin{definition}{Class}
+				A type whose variables are objects.
+			\end{definition}
+
+		\pagebreak
+		\section{File Names as Input}
+			A \texttt{c-string} needs to be sent to the stream for the input file.
+			\begin{codebox}{File Name Input Example}
+				\begin{minted}{cpp}
+// Using c-string
+char file_name[16];
+cin >> file_name;
+ifstream inStream(file_name);
+
+// Using string
+string file_name;
+cin >> file_name;
+ifstream inStream(file_name.c_str());
+
+				\end{minted}
+			\end{codebox}
+
+		\section{Processing Files Tips}
+			\begin{sidenote}{Check whether the file opened successfully}
+				\begin{itemize}
+					\item Use \mintinline{cpp}{stream.fail()} -- a boolean function to check whether a file has successfully opened.
+					\item If a file was not opened successfully, you can \mintinline{cpp}{exit} the program. \mintinline{cpp}{exit} is part of the \mintinline{cpp}{<cstdlib>} library.
+				\end{itemize}
+				\begin{minted}[bgcolor=noteCode]{cpp}
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int main()
+{
+    ifstream inStream;
+    inStream.open("input.dat");
+    if (inStream.fail())
+    {
+        cout << "Unable to open file.\n";
+        exit(1);
+    }
+    return 0;
+}
+				\end{minted}
+			\end{sidenote}
+		\pagebreak
+
+		\section{Data Files vs Text Files}
+			\begin{itemize}
+				\item A \concept{data file} should be read as \texttt{string}s, \texttt{int}s, etc. This contains data that should be processed as a unit.
+				\item A \concept{text file} should be processed character by character.
+			\end{itemize}
+			\begin{codebox}{Reading Data Files}
+				\inputminted[]{cpp}{\subfix{code/02_data_files.cpp}}
+			\end{codebox}
+			\pagebreak
+			\begin{codebox}{Reading Text Files}
+				\inputminted[]{cpp}{\subfix{code/03_text_files.cpp}}
+			\end{codebox}
+			\begin{itemize}[nosep]
+				\item The function \mintinline{cpp}{.get} reads one character from an instream
+				\item The function \mintinline{cpp}{.put} places one character in an outstream
+				\item The function \mintinline{cpp}{.eof} determines if the next character is the end of file marker.
+			\end{itemize}
+
+		\section{Streams as arguments to functions}
+			A stream parameter must \emph{always} be call-by-reference.
+			\mint[bgcolor=codeColor]{cpp}{void function(ifstream& stream);}
+
+	\rulechapterend
+\end{document}
