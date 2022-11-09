@@ -1,0 +1,107 @@
+\providecommand{\main}{../..}
+\documentclass[\main/notes.tex]{subfiles}
+
+\begin{document}
+	\setcounter{chapter}{5}
+	\chapter{Friends and Overloaded Operators}
+		\section{Friend Functions}
+			\begin{definition}{Friend Function}
+				Not a member function of a class, but has access to private members of a class. Must be named as a friend in the class definition.
+			\end{definition}
+			\begin{codebox}{Declaring friend functions}
+				\begin{minted}{cpp}
+class ClassName
+{
+  public:
+    friend functionName(functionParams);
+};
+				\end{minted}
+			\end{codebox}
+			\begin{sidenote}{Define both accessor functions and friend functions}
+				Making every function a friend function is impractical. Therefore both should be used.
+			\end{sidenote}
+			\begin{sidenote}{Use \texttt{const} and call-by-reference parameters}
+				It is more efficicent for a friend function to use a call-by-reference parameter. If the friend function does not change the value of the reference parameters, they can be declared \mintinline{cpp}{const}
+				\begin{minted}[bgcolor=noteCode]{cpp}
+// An example:
+class Money
+{
+  public:
+    friend Money add(const Money& amount1, const Money& amount2);
+};
+
+Money add(const Money& amount1, const Money& amount2){}
+				\end{minted}
+			\end{sidenote}
+
+		\section{Overloading Operators}
+			\begin{sidenote}{Operator Overloading}
+				A binary operator is a function that is called using a different syntax for listing its arguments. Therefore, these can be overloaded.
+
+				To overload an operator, use the same syntax as overloading a function, but include the keyword \mintinline{cpp}{operator}.
+				\begin{minted}[bgcolor=noteCode]{cpp}
+Money operator +(const Money& amount1, const Money& amount2){}
+				\end{minted}
+			\end{sidenote}
+			\begin{definition}{Rules for operator overloading}
+				\begin{itemize}[nosep]
+					\item At least one argument of the resulting overloaded operator must be a class
+					\item An overloaded operator can be, but does not have to be, a friend of the class
+					\item You cannot create a new operator
+					\item You cannot change the number of arguments that an operator takes
+					\item You cannot change the precedence of an operator
+					\item The following operators \emph{cannot} be overloaded: \mintinline{cpp}{.}, \mintinline{cpp}{::}, \mintinline{cpp}{.*}, \mintinline{cpp}{?:}
+					\item Overloading the assignment operator must be done in a different way
+				\end{itemize}
+			\end{definition}
+			\begin{sidenote}{Overloading \texttt{<<} and \texttt{>>}}
+				These operators each return a \emph{stream}. Therefore, to overload, the function should return a stream reference.
+				\begin{minted}[bgcolor=noteCode]{cpp}
+friend ostream& operator << (ostream& outs, const Class& name);
+friend istream& operator >> (istream& ins, const Class& name);
+				\end{minted}
+			\end{sidenote}
+			\begin{sidenote}{The `Big Three'}
+				\begin{itemize}[nosep]
+					\item Copy constructor
+					\item Destructor
+					\item \texttt{=} Operator
+				\end{itemize}
+			\end{sidenote}
+			\begin{codebox}{Overloading the assignment operator}
+				\begin{minted}{cpp}
+class ClassName
+{
+  public:
+    void operator =(const ClassName& rightSide);
+}
+				\end{minted}
+			\end{codebox}
+
+		\section{The \texttt{this} pointer}
+			\begin{definition}{\texttt{this} pointer}
+				Used to refer to the calling object. Not the name of the calling object, but rather a ponter that points to the calling object.
+				\begin{minted}[bgcolor=definitionCode]{cpp}
+this->variable;
+				\end{minted}
+			\end{definition}
+
+		\section{Overloading operators as member functions}
+			\begin{codebox}{Example}
+				\begin{minted}{cpp}
+class Money
+{
+  public:
+    Money operator +(const Money& amount2);
+}
+// As opposed to
+class Money
+{
+  public:
+    friend Money operator +(const Money& amount1,
+                            const Money& amount2);
+}
+				\end{minted}
+			\end{codebox}
+	\rulechapterend
+\end{document}
