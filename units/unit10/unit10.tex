@@ -1,0 +1,72 @@
+\providecommand{\main}{../..}
+\documentclass[\main/notes.tex]{subfiles}
+
+\begin{document}
+	\setcounter{chapter}{9}
+	\chapter{Templates}
+		\section{Function Templates}
+			\begin{definition}{Function Template}
+				Define a function that can work on different types.
+				\begin{minted}[bgcolor=definitionCode]{cpp}
+template<class T>
+				\end{minted}
+				This is called the \concept{template prefix}, and needs to appear before each template function.
+				\vspace{10px}
+
+				\noindent An example:
+				\begin{minted}[bgcolor=definitionCode]{cpp}
+template<class T>
+void swapValues(T& variable1, T& variable2)
+{
+    T temp;
+
+    temp = variable1;
+    variable1 = variable2;
+    variable2 = temp;
+}
+				\end{minted}
+			\end{definition}
+			\begin{sidenote}{More than one type parameter}
+				To declare more than one type, do the following:
+				\begin{minted}[bgcolor=noteCode]{cpp}
+template<class T1, class T2>
+				\end{minted}
+			\end{sidenote}
+			\begin{sidenote}{Template Functions in Header and Implementation Files}
+If there are template functions in the header \emph{and} implementation files, then the \texttt{.cpp} file needs to also be included in the main file.
+				\begin{minted}[bgcolor=noteCode]{cpp}
+#include "class.h"
+#include "class.cpp"
+				\end{minted}
+			\end{sidenote}
+
+		\section{Data Templates}
+			Use the same syntax as for function templates. Declare this template \emph{before} the class, and then before each implemented function.
+			\begin{codebox}{Data template}
+				\begin{minted}[bgcolor=]{cpp}
+template<class> T
+class Pair
+{
+    public:
+        Pair();
+        Pair(T val1, T val2);
+        void setElement(int position, T value);
+        T getElement(int position) const;
+    private:
+        T first;
+        T second;
+}
+
+template<class T>
+Pair<T>::Pair(T val1, T val2)
+       : first(val1), second(val2) {}
+
+template<class T>
+T Pair<T>::getElement(int position) const {...}
+				\end{minted}
+
+
+			\end{codebox}
+
+	\rulechapterend
+\end{document}
