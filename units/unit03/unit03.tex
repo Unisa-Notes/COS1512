@@ -1,0 +1,174 @@
+\providecommand{\main}{../..}
+\documentclass[\main/notes.tex]{subfiles}
+
+\begin{document}
+	\setcounter{chapter}{2}
+	\chapter{Strings and Vectors}
+		\section{C-Strings}
+			\begin{definition}{C-string}
+				An array of characters terminated with \mintinline{cpp}{'\0'}, also known as the \concept{null character}.
+			\end{definition}
+			A string literal is stored using a c-string.
+
+			When declaring a c-string as an array, remember to add $1$ to the length, in order to include the termination character.
+			\begin{codebox}{Declaring a C-string}
+				\begin{minted}{cpp}
+char ArrayName[Max_C_string_size + 1];
+				\end{minted}
+			\end{codebox}
+			\begin{sidenote}{Initialising a c-string}
+				A c-string can be initialised when declared, using a string literal.
+				\begin{minted}[bgcolor=noteCode]{cpp}
+char myMessage[20] = "Hi there.";
+				\end{minted}
+			\end{sidenote}
+			\begin{sidenote}{An array of characters is not a c-string!}
+				The following two lines of code are \emph{not} equivalent.
+				\begin{minted}[bgcolor=noteCode]{cpp}
+char cString[] = "abc";
+char charArray[] = {'a', 'b', 'c'};
+				\end{minted}
+			\end{sidenote}
+			\noindent As a c-string is an array, you can index it the same way you would a normal array. Be careful to not destroy the \mintinline{cpp}{'\0'} using that.
+
+			\subsection{C-string Assignment}
+				\begin{sidenote}{C-strings cannot use \mintinline{cpp}{=} after initialised}
+					As a c-string is an array, after the c-string is initialised, you cannot use \mintinline{cpp}{=} to assign a new value.
+					\begin{minted}[bgcolor=noteCode]{cpp}
+char aString[10];
+aString = "Hello"; // illegal!
+					\end{minted}
+					Instead, to assign a value to a c-string variable, use:
+					\begin{minted}[bgcolor=noteCode]{cpp}
+char aString[10];
+strcpy(aString, "Hello");
+					\end{minted}
+					This, however, does not check whether the new string exceeds the size. To ensure a copied-over string does not exceed the size, use \mintinline{cpp}{strncpy}
+					\begin{minted}[bgcolor=noteCode]{cpp}
+char bString[10];
+strcpy(bString, aString, 9);
+					\end{minted}
+					At max, $9$ characters will be copied.
+				\end{sidenote}
+
+			\subsection{Comparing C-strings}
+			\begin{sidenote}{C-strings cannot use \mintinline{cpp}{==} to compare}
+				To compare c-strings, use \mintinline{cpp}{strcmp}. This function returns true if the strings \emph{do not} match.
+				\begin{minted}[bgcolor=noteCode]{cpp}
+if (strcmp(cString1, cString2))
+  cout << "The strings are NOT the same.";
+else
+  cout << "The strings are the same.";
+				\end{minted}
+				C-strings are compared using \concept{lexicographic order}. It compares character by character. If the characters are not the same, it stops. If the character in the first string is greater than the character in the second string, then a positive number is returned. If the character in the first string is less, a negative number is returned. If it gets to the end of the string, a $0$ is returned.
+			\end{sidenote}
+			The functions used for c-string comparison and assignment are defined in the \mintinline{cpp}{<cstring>} library.
+			\pagebreak
+
+			\subsection{C-String Library}
+				\begin{definition}{\texttt{<cstring>} library}
+					\begin{center}
+						\begin{tblr}{>{\raggedright}X>{\raggedright}X>{\raggedright}X}
+							Function & Description & Cautions\\
+							\midrule
+							\mintinline[breaklines]{cpp}{void strcopy(cstring target, cstring src);} & Copies the value of \mintinline{cpp}{src} into \mintinline{cpp}{target}. & Doesn't check whether \mintinline{cpp}{target} is large enough.\\
+							\mintinline[breaklines]{cpp}{void strcopy(cstring target, cstring src, int limit);} & Copies the value of \mintinline{cpp}{src} into \mintinline{cpp}{target}, for at most \mintinline{cpp}{limit} characters. & Not implemented in all C++ versions.\\
+							\mintinline[breaklines]{cpp}{void strcat(cstring target, cstring src);} & Concatenates \mintinline{cpp}{src} to the end of \mintinline{cpp}{target}. & Doesn't check whether \mintinline{cpp}{target} is large enough.\\
+							\mintinline[breaklines]{cpp}{void strncat(cstring target, cstring src, int limit);} & Concatenates \mintinline{cpp}{src} to the end of \mintinline{cpp}{target} for at most \mintinline{cpp}{limit} characters. & Not implemented in all C++ versions.\\
+							\mintinline[breaklines]{cpp}{int strlen(cstring src);} & Returns the number of characters in \mintinline{cpp}{src}. & The number does not include the termination character \mintinline{cpp}{'\0'}\\
+							\mintinline[breaklines]{cpp}{int strcmp(cstring str1, cstring str2);} & Returns $0$ if \mintinline{cpp}{str1} has the same characters as \mintinline{cpp}{str2}. Returns a negative value if the character in \mintinline{cpp}{str1} is less than the character in \mintinline{cpp}{str2}. Returns a positive value if the character in \mintinline{cpp}{str1} is greater than the character in \mintinline{cpp}{str2}. Compares lexigraphically. & If the cstrings are the same, $0$, which translates to \emph{false}, is returned.\\
+							\mintinline[breaklines]{cpp}{int strncmp(cstring str1, cstring str2, int limit);} & Same as \mintinline{cpp}{strcmp}, except only \mintinline{cpp}{limit} number of characters are compared. & Not implemented in all C++ versions.
+						\end{tblr}
+					\end{center}
+				\end{definition}
+
+			\subsection{C-String Conversions}
+				\begin{definition}{C-String to Number}
+					Use \mintinline{cpp}{atoi}, \mintinline{cpp}{atof}, and \mintinline{cpp}{atol} to convert a c-string to an integer, float, or long respectively.
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+#include <cstdlib>
+using namespace std;
+
+int x = atoi("123");
+float y = atof("45.67");
+long z = atol("89101112");
+					\end{minted}
+				\end{definition}
+
+		\section{Strings}
+			\begin{definition}{\texttt{string}}
+				A class that allows programmers to treat strings as a basic data type. To use, include the \mintinline{cpp}{<string>} library.
+
+				Allows one to use string values and variables similarly to that of a basic type 
+				\begin{itemize}
+					\item \mintinline{cpp}{=} can be used for assignment
+					\item \mintinline{cpp}{+} can be used for concatenation
+				\end{itemize}
+			\end{definition}
+			\begin{codebox}{String Constructors}
+				\begin{minted}{cpp}
+#include <string>
+using namespace std;
+
+string phrase;
+string noun("words");
+// equivalent to
+string noun = "words";
+				\end{minted}
+			\end{codebox}
+			\begin{sidenote}{String to C-String}
+				To convert a string to a cstring, use the function \mintinline{cpp}{.c_str()}.
+				\begin{minted}[bgcolor=noteCode]{cpp}
+string name = "Hello world!";
+char nameCString[] = name.c_str();
+				\end{minted}
+			\end{sidenote}
+
+		\section{Vectors}
+			\begin{definition}{Vector}
+				An array that can grow and shrink in size, while the program is running. A vector is a \concept{template class}.
+			\end{definition}
+			\begin{codebox}{Declaring Vectors}
+				\begin{minted}{cpp}
+#include <vector>
+using namespace std;
+
+vector<Base_Type> name;
+
+// Examples:
+vector<int> v1;
+vector<char> v2;
+				\end{minted}
+			\end{codebox}
+			\begin{sidenote}{Square brackets not used to initialise}
+				Like arrays, square brackets can be used to access and set the values at a particular index.
+				\begin{minted}[bgcolor=noteCode]{cpp}
+v[i] = 42;
+				\end{minted}
+
+				\noindent However, if that index has not been initialised, the index \emph{cannot} be initialised this way. Instead, use \mintinline{cpp}{vector.push_back()}.
+				\begin{minted}[bgcolor=noteCode]{cpp}
+#include <vector>
+using namespace std;
+
+vector<int> v;
+v.push_back(1);
+v.push_back(2);
+v.push_back(3); // v is now [1, 2, 3]
+				\end{minted}
+
+				\noindent A vector can be initialised in the same way as an array:
+				\begin{minted}[bgcolor=noteCode]{cpp}
+vector<char> v = {'a', 'b', 'c'};
+				\end{minted}
+			\end{sidenote}
+			\begin{sidenote}{Size of a vector}
+				To determine the size of a vector, use \mintinline{cpp}{vector.size()}. This returns an \emph{unsigned int}, instead of an int.
+				\begin{minted}[bgcolor=noteCode]{cpp}
+vector<int> sample;
+for (unsigned int i = 0; i < sample.size(); i++)
+	cout << sample[i] << endl;
+				\end{minted}
+			\end{sidenote}
+	\rulechapterend
+\end{document}
