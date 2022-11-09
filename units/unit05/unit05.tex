@@ -1,0 +1,145 @@
+\providecommand{\main}{../..}
+\documentclass[\main/notes.tex]{subfiles}
+
+\begin{document}
+	\setcounter{chapter}{4}
+	\chapter{Defining Classes}
+		\section{Classes}
+			\begin{codebox}{Basic Class}
+				\begin{minted}{cpp}
+class ClassName
+{
+  public:
+    Member_1;
+    Member_N;
+  protected:
+    Member_N+1;
+    Member_N+2;
+  private:
+    Member_N+3;
+    Member_N+4;
+}
+				\end{minted}
+			\end{codebox}
+			\begin{definition}{Accessors and Mutators}
+				Also called \concept{getters and setters}. Used to access and set private member variables.
+				\begin{minted}[bgcolor=definitionCode]{cpp}
+class ClassName
+{
+  public:
+    void setName(string newName); // mutator
+    string getName(); // accessor
+  private:
+    string name;
+};
+				\end{minted}
+				\pagebreak
+				\begin{minted}[bgcolor=definitionCode]{cpp}
+void ClassName::setName(string newName)
+{
+  name = newName;
+}
+string ClassName::getName()
+{
+  return name;
+}
+				\end{minted}
+			\end{definition}
+			\begin{definition}{Constructor}
+				Used to initialise some or all member variables of an object when it is declared. A member function that is automatically called when an object of that class is declared.
+				\begin{itemize}[nosep]
+					\item Must have the same name as the class.
+					\item Cannot return a value.
+				\end{itemize}
+				\begin{minted}[bgcolor=definitionCode]{cpp}
+class ClassName
+{
+  public:
+    ClassName(string name); // constructor
+  private:
+    string name;
+};
+ClassName::ClassName(string name)
+{
+  this->name = name;
+}
+				\end{minted}
+			\end{definition}
+			\begin{sidenote}{Constructor Initialization Section}
+				The constructor can have a section before the function that is used to set the member variables of the class.
+				\begin{minted}[bgcolor=noteCode]{cpp}
+class ClassName
+{
+  public:
+    ClassName(int set1, int set2);
+  private:
+    int member1;
+    int member2;
+};
+ClassName::ClassName(int set1, int set2)
+         : member1(set1), member2(set2) {}
+				\end{minted}
+			\end{sidenote}
+			\begin{codebox}{Calling a Constructor}
+				\begin{minted}{cpp}
+Object = ConstructorName(ConstructorArguments);
+account1 = BankAccount(200, 3.5);
+
+ClassName ObjectName(ConstructorArguments);
+BankAccount account1(100, 2.3);
+				\end{minted}
+			\end{codebox}
+			\begin{sidenote}{Always include a default constructor}
+				If an object is created without arguments, the default constructor is called. So this should be included in the class definition, if another constructor is created.
+				\begin{minted}[bgcolor=noteCode]{cpp}
+class ClassName
+{
+  public:
+    ClassName(string name);
+    ClassName(); // default constructor
+  private:
+    string name;
+};
+				\end{minted}
+			\end{sidenote}
+
+		\section{Abstract Data Types}
+			\begin{definition}{Data Type}
+				A collection of values together with a set of basic operations defined on those types.
+			\end{definition}
+			\begin{definition}{Abstract Data Type (ADT)}
+				Programmers who use the type do not have access to the details of how the values and operations are implemented.
+			\end{definition}
+			\begin{sidenote}{How to Write an ADT}
+				\begin{enumerate}[nosep]
+					\item Make all the member variables private members of the class.
+					\item Make each of the basic operations needed a public member function.
+					\item Make any helping functions private member functions.
+				\end{enumerate}
+			\end{sidenote}
+			\begin{sidenote}{Interface}
+				Explains how to use an ADT in the program -- header file.
+			\end{sidenote}
+			\begin{sidenote}{Implementation}
+				Explains how the interface is realised as C++ code.
+			\end{sidenote}
+
+		\section{Inheritance}
+			Define a more general class, and then derive a more specific class from that general class.
+			\begin{definition}{Derived Classes}
+				A class that inherits functionality from a more general class.
+
+				\noindent To delare a derived class:
+				\begin{minted}[bgcolor=definitionCode]{cpp}
+class DerivedName : public ParentName
+{
+  public:
+    DerivedName(int member1, int member2);
+    // other constructors
+}
+				\end{minted}
+				The derived class gets every public member of the general (or parent) class. Only new functionality needs to be defined.
+			\end{definition}
+
+	\rulechapterend
+\end{document}
