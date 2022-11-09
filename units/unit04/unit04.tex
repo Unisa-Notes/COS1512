@@ -1,0 +1,133 @@
+\providecommand{\main}{../..}
+\documentclass[\main/notes.tex]{subfiles}
+
+\begin{document}
+	\setcounter{chapter}{3}
+	\chapter{Pointers and Dynamic Arrays}
+		\section{Pointers}
+			\begin{definition}{Pointer}
+				Memory address of a variable. Give the address where a variable starts. Called a pointer because it identifies the variable by saying where it is, rather than by name.
+
+				When a variable is used as a call-by-reference parameter, the function is given this argument as a pointer.
+			\end{definition}
+			\subsection{Pointer Variables}
+				\begin{definition}{Declaring Pointer Variables}
+					Cannot store a pointer in a variable of type \mintinline{cpp}{int} without type-casting. The variable must be declared to have a pointer type.
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+double *p; // p is a pointer that points to a double
+int *p1, *p2; // p1 and p2 point to different ints
+int *p3, v1; // p3 points to an int, v1 is an ordinary variable.
+					\end{minted}
+				\end{definition}
+				\begin{sidenote}{Asterisks!}
+					There needs to be an asterisk before each pointer variable.
+					\begin{minted}[bgcolor=noteCode]{cpp}
+int *p1, *p2; // right
+int *p1, p2; // wrong - p2 is a normal variable, not a pointer
+					\end{minted}
+				\end{sidenote}
+				\begin{definition}{Getting the address of a variable}
+					Pointer variables can point to declared variables. To do this, the address of the variable needs to be stored in the pointer. Use \mintinline{cpp}{&} (the \concept{reference operator}) to do that.
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+int v1;
+int *p1;
+p1 = &v1;
+					\end{minted}
+				\end{definition}
+				\begin{definition}{Dereferencing a pointer}
+					To get the value of the variable that a pointer is referring to, use \mintinline{cpp}{*} (the \concept{dereferencing operator}).
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+int v1;
+int *p1;
+p1 = &v1;
+
+v1 = 5;
+int v2 = *p1; // v2 is also 5
+int v3 = v1; // v3 is also 5
+					\end{minted}
+					\mintinline{cpp}{v2} and \mintinline{cpp}{v3} above can be modified without affecting the pointer, or \mintinline{cpp}{v1}.
+				\end{definition}
+				\begin{definition}{Pointers in assignment statements}
+					You can assign the value of one pointer variable to another pointer variable.
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+int v1;
+int *p1, *p2;
+p1 = &v1;
+p2 = p1; // p2 points to the same variable that p1 points to
+					\end{minted}
+				\end{definition}
+				\begin{sidenote}{Do not confuse \texttt{p1 = p2} and \texttt{*p1 = *p2}}
+					\begin{itemize}
+						\item The first (\mintinline{cpp}{p1 = p2}) sets \mintinline{cpp}{p1} to point to the same variable as \mintinline{cpp}{p2}.
+						\item The second (\mintinline{cpp}{*p1 = *p2}) sets the variable that \mintinline{cpp}{p1} is pointing to, to the value of the variable that \mintinline{cpp}{p2} is pointing to.
+					\end{itemize}
+				\end{sidenote}
+				\begin{definition}{The \emph{new} operator}
+					Used to create variables that have no identifiers to serve as their names. These variables are referred to via pointers.
+					\begin{minted}[bgcolor=definitionCode]{cpp}
+p1 = new int;
+cin >> *p1;
+*p1 = *p1 + 7;
+cout << *p1;
+					\end{minted}
+					These variables are called \concept{dynamic variables}, as they are created an destroyed while the program is running.
+				\end{definition}
+				\begin{definition}{The freestore}
+					A special area of memory reserved for dynamic variables.
+				\end{definition}
+				\begin{sidenote}{Recycle any freestore memory that is no longer needed}
+					If a program is no longer using a dynamic variable, the memory used to store it can be recycled. To do this, use the \mintinline{cpp}{delete} operator.
+					\begin{minted}[bgcolor=noteCode]{cpp}
+delete p;
+					\end{minted}
+				\end{sidenote}
+				\begin{sidenote}{Dangling Pointers}
+					When \mintinline{cpp}{delete} is used, the dynamic variable that the pointer is pointing to is destroyed. That means the value of the pointer variable is \emph{undefined}. If another pointer was pointing to the same variable, it is also undefined. These pointers are called \concept{dangling pointers}. If a dereferencing operator is applied to a dangling pointer, the result is unpredictable.
+				\end{sidenote}
+				\begin{definition}{Automatic Variables}
+					Variables defined with the \mintinline{cpp}{new} operator are called dynamic variables, but normal C++ variables are not called static variables. They are called \concept{automatic variables}, because their dynamic properties are controlled automatically by C++.
+				\end{definition}
+				\begin{sidenote}{Defining Pointer Types}
+					In order to ensure no mistakes when declaring pointers, you can declare a pointer type in the following way:
+					\begin{minted}[bgcolor=noteCode]{cpp}
+typedef int* IntPtr;
+					\end{minted}
+					This then makes the following equivalent:
+					\begin{minted}[bgcolor=noteCode]{cpp}
+IntPtr p;
+int* p;
+					\end{minted}
+				\end{sidenote}
+
+		\pagebreak
+		\section{Dynamic Arrays}
+			\begin{definition}{Dynamic Array}
+				An array whose size is not specified when the program is written, but is determined while the program is running.
+			\end{definition}
+			An array is actually a pointer variable that points to the first indexed variable of the array.
+			\begin{definition}{Creating a Dynamic Array}
+				Dynamic arrays are created using the \mintinline{cpp}{new} operator.
+				\begin{minted}[bgcolor=definitionCode]{cpp}
+typedef double* DoublePtr;
+DoublePtr p;
+p = new double[10];
+				\end{minted}
+				The size can be read in as an integer variable:
+				\begin{minted}[bgcolor=definitionCode]{cpp}
+int size;
+cout << "Enter the size: ";
+cin >> size;
+
+typedef int* IntPtr;
+IntPtr p;
+p = new int[size];
+				\end{minted}
+			\end{definition}
+			\begin{sidenote}{Deleting a Dynamic Array}
+				To delete a dynamic array, you need to include the square brackets.
+				\begin{minted}[bgcolor=noteCode]{cpp}
+delete [] a;
+				\end{minted}
+			\end{sidenote}
+	\rulechapterend
+\end{document}
