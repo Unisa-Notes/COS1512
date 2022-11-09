@@ -1,0 +1,20 @@
+\providecommand{\main}{../..}
+\documentclass[\main/notes.tex]{subfiles}
+
+\begin{document}
+	\setcounter{chapter}{6}
+	\chapter{Separate Compilation (ADTs)}
+		Define the interface for the class in a separate file, called a \concept{header file}. Define the implementation of the class in a separate file, called the \concept{implementation file}. When using the class in a program, call it using the include directive, with the header.
+		\section{An Example}
+			\begin{codebox}{Header file: \texttt{example.h}}
+				\inputminted{cpp}{\subfix{code/01_example/example.h}}
+			\end{codebox}
+			\pagebreak
+			\begin{codebox}{Implementation file: \texttt{example.cpp}}
+				\inputminted{cpp}{\subfix{code/01_example/example.cpp}}
+			\end{codebox}
+			\begin{codebox}{Application file: \texttt{app.cpp}}
+				\inputminted{cpp}{\subfix{code/01_example/app.cpp}}
+			\end{codebox}
+	\rulechapterend
+\end{document}
