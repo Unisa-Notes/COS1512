@@ -45,63 +45,88 @@ string ClassName::getName()
 }
 				\end{minted}
 			\end{definition}
-			\begin{definition}{Constructor}
-				Used to initialise some or all member variables of an object when it is declared. A member function that is automatically called when an object of that class is declared.
-				\begin{itemize}[nosep]
-					\item Must have the same name as the class.
-					\item Cannot return a value.
-				\end{itemize}
-				\begin{minted}[bgcolor=definitionCode]{cpp}
+			\subsection{Constructors}
+				\begin{definition}{Constructor}
+					Used to initialise some or all member variables of an object when it is declared. A member function that is automatically called when an object of that class is declared.
+					\begin{itemize}[nosep]
+						\item Must have the same name as the class.
+						\item Cannot return a value.
+					\end{itemize}
+					\begin{minted}[bgcolor=definitionCode]{cpp}
 class ClassName
 {
-  public:
-    ClassName(string name); // constructor
-  private:
-    string name;
+	public:
+		ClassName(string name); // constructor
+	private:
+		string name;
 };
 ClassName::ClassName(string name)
 {
-  this->name = name;
+	this->name = name;
 }
-				\end{minted}
-			\end{definition}
-			\begin{sidenote}{Constructor Initialization Section}
-				The constructor can have a section before the function that is used to set the member variables of the class.
-				\begin{minted}[bgcolor=noteCode]{cpp}
+					\end{minted}
+				\end{definition}
+				\begin{sidenote}{Constructor Initialization Section}
+					The constructor can have a section before the function that is used to set the member variables of the class.
+					\begin{minted}[bgcolor=noteCode]{cpp}
 class ClassName
 {
-  public:
-    ClassName(int set1, int set2);
-  private:
-    int member1;
-    int member2;
+	public:
+		ClassName(int set1, int set2);
+	private:
+		int member1;
+		int member2;
 };
 ClassName::ClassName(int set1, int set2)
-         : member1(set1), member2(set2) {}
-				\end{minted}
-			\end{sidenote}
-			\begin{codebox}{Calling a Constructor}
-				\begin{minted}{cpp}
+				: member1(set1), member2(set2) {}
+					\end{minted}
+				\end{sidenote}
+				\begin{codebox}{Calling a Constructor}
+					\begin{minted}{cpp}
 Object = ConstructorName(ConstructorArguments);
 account1 = BankAccount(200, 3.5);
 
 ClassName ObjectName(ConstructorArguments);
 BankAccount account1(100, 2.3);
-				\end{minted}
-			\end{codebox}
-			\begin{sidenote}{Always include a default constructor}
-				If an object is created without arguments, the default constructor is called. So this should be included in the class definition, if another constructor is created.
-				\begin{minted}[bgcolor=noteCode]{cpp}
+					\end{minted}
+				\end{codebox}
+				\begin{sidenote}{Always include a default constructor}
+					If an object is created without arguments, the default constructor is called. So this should be included in the class definition, if another constructor is created.
+					\begin{minted}[bgcolor=noteCode]{cpp}
+class ClassName
+{
+	public:
+		ClassName(string name);
+		ClassName(); // default constructor
+	private:
+		string name;
+};
+					\end{minted}
+				\end{sidenote}
+				\begin{definition}{Copy Constructor}
+					A constructor that has one parameter that is of the same type of the class. This parameter must be a call-by-reference paramneter.
+				\end{definition}
+			\subsection{Destructors}
+				\begin{definition}{Destructor}
+					A member function that is called automatically when an object of the class passes out of scope. Used to delete any dynamic variables that an object uses.
+					\begin{itemize}[nosep]
+						\item Must have the same name as the class, preceded by a \mintinline{cpp}{~}.
+						\item Cannot return a value.
+					\end{itemize}
+					\begin{minted}[bgcolor=definitionCode]{cpp}
 class ClassName
 {
   public:
-    ClassName(string name);
-    ClassName(); // default constructor
+    ~ClassName(); // destructor
   private:
-    string name;
+    int *value; // hold a dynamic array
 };
-				\end{minted}
-			\end{sidenote}
+ClassName::~ClassName()
+{
+  delete [] value; // delete dynamic array
+}
+					\end{minted}
+				\end{definition}
 
 		\section{Abstract Data Types}
 			\begin{definition}{Data Type}
