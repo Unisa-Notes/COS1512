@@ -1,0 +1,57 @@
+\providecommand{\main}{../..}
+\documentclass[\main/notes.tex]{subfiles}
+
+\begin{document}
+	\setcounter{chapter}{8}
+	\chapter{Inheritance}
+		\begin{definition}{Inheritance}
+			The process by a which a new class (a \concept{derived class} or \concept{child class}) is created from another class (a \concept{base class} or \concept{parent class}).
+		\end{definition}
+		\begin{sidenote}{Inherited Members}
+			A derived class has all the member variables and ordinary member functions of the base class. If changing the definition of a member function, it needs to be included in the derived class definition.
+		\end{sidenote}
+		\begin{definition}{Constructors in Derived Classes}
+			A constructor from the base class is \emph{not} inherited by the derived class, but can still be called as part of the derived class constructor.
+			\begin{minted}[bgcolor=definitionCode]{cpp}
+DerivedClass::DerivedClass(arguments) : BaseClass(arguments)
+			\end{minted}
+			If a call to a constructor is not included, the default constructor of the base class will automaticallt be called when the derived class constructor is called.
+		\end{definition}
+		\begin{sidenote}{Be careful using private member variables from the base class!}
+			Private member variables of the base class can only be accessed within the definition of a member function of the base class.
+
+			While a derived class has the member variable, this cannot be directly accessed using member functions of the derived class.
+
+			Instead, getters and setters should be used to access the variable. Also, the \mintinline{cpp}{protected} qualifer can be used instead of the \mintinline{cpp}{private} qualifer, to make variables accessible to derived classes.
+		\end{sidenote}
+		\begin{sidenote}{The \texttt{protected} qualifier}
+			Allows derived classes to access variables from a base class, but makes the variables private (inaccessible) to any function that is not part of the derived class.
+		\end{sidenote}
+		\begin{definition}{Qualifiers Access}
+			\begin{center}
+				\begin{tblr}{c|ccc}
+					& Base Class & Derived Class & Other Functions\\
+					\midrule
+					\texttt{public} & Yes & Yes & Yes\\
+					\texttt{private} & Yes & No & No\\
+					\texttt{protected} & Yes & Yes & No
+				\end{tblr}
+			\end{center}
+		\end{definition}
+		\begin{sidenote}{Redefining vs Overloading}
+			\begin{description}
+				\item[Redefining] The new function definition has the same number and types of parameters.
+				\item[Overloading] The function has a different number of parameters, or a parameter of a different type.
+			\end{description}
+		\end{sidenote}
+		\begin{sidenote}{Accessing a redefined base function}
+			If the function has been redefined in a derived class, it is still possible to access the original function. To do that:
+			\begin{minted}[bgcolor=noteCode]{cpp}
+Object object;
+DerivedObject derived;
+
+derived.Object::baseClassFunction();
+			\end{minted}
+		\end{sidenote}
+	\rulechapterend
+\end{document}
